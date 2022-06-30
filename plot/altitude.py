@@ -23,6 +23,8 @@ from shapely.geometry import MultiLineString
 from shapely.ops import polygonize
 from geopandas.tools import sjoin
 import seaborn as sns
+from matplotlib.ticker import MaxNLocator
+import matplotlib.ticker as ticker
 
 
 
@@ -84,6 +86,7 @@ for specie in species:
     specie = df.loc[df.nom_latin==specie, ['nom_latin','altitude']]
     # plot
     plt.figure()
+
     specie.plot.hist(
                   grid=False,
                   legend=False,
@@ -91,9 +94,8 @@ for specie in species:
                   color='deeppink')
     plt.xlabel('Altitude')
     plt.ylabel('Nombre observations')
+    #plt.savefig(specie+".png")
 
-
-    
 
 
 
