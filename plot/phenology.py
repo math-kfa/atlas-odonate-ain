@@ -27,10 +27,11 @@ from sklearn.neighbors import KernelDensity
 #----------------------------------------------------------------------------------------------------
 # import csv
 odo_data_csv = r'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/grpls_01_2021_11_03_16_44_02_iso88591.csv'
+outdir = 'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/out_vol/'
 
 # transform in dataframe
 df = pd.read_csv(
-                'grpls_01_2021_11_03_16_44_02_iso88591.csv', 
+                odo_data_csv, 
                  encoding = "ISO-8859-1", 
                  sep=';',
                  low_memory=False,
@@ -122,8 +123,8 @@ plt.show()
 
 
 
-ax = x.plot(kind='hist', bins=52, legend=False, color='deeppink')
-x.plot(kind='kde', ax=ax, secondary_y=True, legend=False, color='orange')
+ax = x.plot(kind='hist', bins=52, legend=False, color='#7d0f51')
+x.plot(kind='kde', ax=ax, secondary_y=True, legend=False, color='deeppink')
 
 
 #ax = z.plot.hist(bins=12, legend=False)

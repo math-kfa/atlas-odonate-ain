@@ -25,6 +25,7 @@ from geopandas.tools import sjoin
 import seaborn as sns
 from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
+from matplotlib.ticker import FormatStrFormatter
 
 
 
@@ -33,8 +34,10 @@ import matplotlib.ticker as ticker
 #----------------------------------------------------------------------------------------------------
 # import csv
 odo_data_csv = r'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/carto/grpls_01_2021_11_03_16_44_02_iso88591.csv'
+outdir = 'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/out_vol/'
+
 # transform in dataframe
-df = pd.read_csv('grpls_01_2021_11_03_16_44_02_iso88591.csv',  
+df = pd.read_csv(odo_data_csv,  
                  encoding = "ISO-8859-1", 
                  sep=';', 
                  low_memory=False)
@@ -71,9 +74,10 @@ x.plot.hist(
 
 plt.xlabel('Altitude')
 plt.ylabel('Nombre observations')
+plt.savefig(outdir+'Orthetrum coerulescens'+'.png')
+plt.show()
 
 '''
-
 
 
 
@@ -86,19 +90,18 @@ for specie in species:
     specie = df.loc[df.nom_latin==specie, ['nom_latin','altitude']]
     # plot
     plt.figure()
-
-    specie.plot.hist(
+    specie.plot(
+                  kind='hist',
                   grid=False,
                   legend=False,
                   bins=50,
-                  color='deeppink')
+                  color='#7d0f51')
+    #plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
     plt.xlabel('Altitude')
     plt.ylabel('Nombre observations')
-    #plt.savefig(specie+".png")
-
-
-
-
+    title = (pd.unique(specie['nom_latin']))
+    plt.savefig(outdir+str(title)+'.png')
+    plt.show()
 
 
 
