@@ -5,21 +5,8 @@ Created on Mon Dec 27 14:43:48 2021
 @author: mathi
 """
 
-
-
-import matplotlib
 import matplotlib.pyplot as plt
-from sklearn.neighbors import KernelDensity
-import matplotlib.dates as mdates
-import scipy.stats as sps
 import pandas as pd
-import geopandas as gpd
-import csv
-
-import seaborn as sns 
-from sklearn.neighbors import KernelDensity
-
-
 
 
 #----------------------------------------------------------------------------------------------------
@@ -48,8 +35,6 @@ df = df[['date_obs','nom_latin','stade']]
 #----------------------------------------------------------------------------------------------------      
 #  arrange dataframe
 #----------------------------------------------------------------------------------------------------
-# filter after 2000
-
 
 #filt = ((df['date_obs']>='2000') & (df['stade'] != 'larve') & (df['stade'] != 'exuvie') & (df['stade'] != 'mort-'))
 
