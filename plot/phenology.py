@@ -2,11 +2,13 @@
 """
 Created on Mon Dec 27 14:43:48 2021
 
-@author: mathi
+@author: Mathias Kalfayan
 """
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+import matplotlib.ticker as plticker
 
 
 #----------------------------------------------------------------------------------------------------
@@ -36,17 +38,14 @@ df = df[['date_obs','nom_latin','stade']]
 #  arrange dataframe
 #----------------------------------------------------------------------------------------------------
 
+#define filters
 
-# df[(~df['stade'].isin(["larve", "exuvie", "mort-"])) & (df['date_obs'] >= '2000-01-01')]
+filt = ((df['date_obs']>='1950-01-01') & (df['stade'] != 'larve') & (df['stade'] != 'exuvie') & (df['stade'] != 'mort-') & (df['stade'] != '-mort'))
+#filt = df[(~df['stade'].isin(["larve", "exuvie", "mort-", "-mort"])) & (df['date_obs'] >= '2000-01-01')] # other syntax
 
-#filt = ((df['date_obs']>='2000') & (df['stade'] != 'larve') & (df['stade'] != 'exuvie') & (df['stade'] != 'mort-'))
+#apply filters
+df = df.loc[filt]
 
-#df[df['date_obs'] >= '2000-01-01']
-#df[~df['stade'].isin(["larve", "exuvie", "mort-"])]
-
-#apply filter
-df = df.loc[(df['date_obs']>='2000') & (df.stade.astype(str) != 'larve') | (df.stade.astype(str) != 'exuvie') | (df.stade.astype(str) != 'mort-')]
-breakpoint()
 
 pd.set_option('display.max_rows', 500)
 print(df)
@@ -101,47 +100,31 @@ print(y['date_obs'].max())
 print(y[y['date_obs']==y['date_obs'].min()])
 print(y[y['date_obs']==y['date_obs'].max()])
 
+month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"]
 
-# plot date range
-
-
-
-'''
-fig, ax1 = plt.subplots()
-ax1.plot(x, x)
-ax2 = ax1.twiny()
-ax2.plot(x, )
-
-
-plt.show()
-
-# witch month given the week number = number of week * 7 / 30
-
-'''
-
-
-
+# plot
 fig , ax1 = plt.subplots(1, 1, figsize=(10, 6), dpi=100)
 ax2 = ax1.twiny()
-#ax3 = ax1.twinx()
 x.plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
 x.plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
-#x.plot(kind='kde', ax=ax3, legend=False, color='orange')
 
 
+ax2.set_xlim(0, 52)
+ax1.set_xlim(0, 12)
 
-# visualizing plot using matplotlib.pyplot library
+#ax1.set_xlabel('Mois')
 
-ax2.set_xlim(0, 53)
-ax1.set_xlim(0, 13)
-ax1.set_xlabel('Date observation')
+# number of bins of ax2
+plt.locator_params(axis='x', nbins=30)
+# change number of bins of ax1
+ax1.set_xticks(np.arange(0, 12))
+# labels
+ax1.set_xticklabels(month, rotation=45, ha='left', minor=False)
+ax2.set_xlabel('Semaine')
+#ax1.set_ylabel('Densité').set_label_position('left')
 ax2.set_ylabel('Nombre observations')
+ax1.xaxis.grid(linestyle='--')
 plt.show()
-
-
-
-#add secondary x axis
-#https://stackoverflow.com/questions/10514315/how-to-add-a-second-x-axis-in-matplotlib
 
 
 
