@@ -88,19 +88,22 @@ plt.show()
 # loop
 for specie in species:
     specie = df.loc[df.nom_latin==specie, ['nom_latin','altitude']]
-    # plot
-    plt.figure()
+    # plot(800x600)
+    plt.figure(figsize=(8, 6), dpi=100)
     specie.plot(
                   kind='hist',
                   grid=False,
                   legend=False,
                   bins=50,
                   color='#7d0f51')
+    #set axes parameters
+    #plt.ylim(0.9)
     #plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
     plt.xlabel('Altitude')
     plt.ylabel('Nombre observations')
+    #save
     title = (pd.unique(specie['nom_latin']))
-    plt.savefig(outdir+str(title)+'.png')
+    #plt.savefig(outdir+str(title)+'.png')
     plt.show()
 
 
