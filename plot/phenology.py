@@ -17,6 +17,7 @@ import matplotlib.ticker as plticker
 # import csv
 odo_data_csv = r'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/grpls_01_2021_11_03_16_44_02_iso88591.csv'
 outdir = 'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/out_vol/'
+month = ["Janvier", "Février", "   Mars  ", "  Avril  ", "   Mai   ", "  Juin  ", "Juillet", "   Août   ", "Septembre", " Octobre ", "Novembre", "Decembre"]
 
 # transform in dataframe
 df = pd.read_csv(
@@ -85,43 +86,51 @@ species = [val for val in species if not val.endswith(("sp.","ae","donata","pter
 #  for 1 species
 #----------------------------------------------------------------------------------------------------
 # select the serie for a specie
-y = df.loc[df.nom_latin=='Somatochlora arctica']
-x = df.loc[df.nom_latin=='Somatochlora arctica', ['week']]
-z = df.loc[df.nom_latin=='Anax imperator', ['date_obs']]
+sp = df.loc[df.nom_latin=='Somatochlora arctica']
 # print all rows
-pd.set_option('display.max_rows', x.shape[0]+1)
-print(y.sort_values(['week'], ascending=False))
+pd.set_option('display.max_rows', sp.shape[0]+1)
+print(sp.sort_values(['week'], ascending=False))
 
 
 #min and max value
-print(y['date_obs'].min())
-print(y['date_obs'].max())
+minDate = sp['week'].min()
+maxDate = sp['week'].max()
 
-print(y[y['date_obs']==y['date_obs'].min()])
-print(y[y['date_obs']==y['date_obs'].max()])
+print(sp['week'].loc[lambda minDate: minDate==True].index)
 
-month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"]
 
 # plot
-fig , ax1 = plt.subplots(1, 1, figsize=(10, 6), dpi=100)
+fig , ax1 = plt.subplots(1, 1, figsize=(12, 6), dpi=100)
 ax2 = ax1.twiny()
-x.plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
-x.plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
+sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
+sp['week'].plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
 
-
+#axes range
 ax2.set_xlim(0, 52)
 ax1.set_xlim(0, 12)
 
-#ax1.set_xlabel('Mois')
+#############################################################################
+'''
+ax2.annotate('Test',
+             (sp.index[1]),
+             xytext=(15, 15), 
+             textcoords='offset points',
+             arrowprops=dict(arrowstyle='-|>'))
 
-# number of bins of ax2
+'''
+
+##############################################################################
+
+
+
+# axes' number of bins
 plt.locator_params(axis='x', nbins=30)
-# change number of bins of ax1
 ax1.set_xticks(np.arange(0, 12))
-# labels
+# axes' labels
 ax1.set_xticklabels(month, rotation=45, ha='left', minor=False)
+#ax1.set_ylabel('Densité')
+#ax1.set_xlabel('Mois')
 ax2.set_xlabel('Semaine')
-#ax1.set_ylabel('Densité').set_label_position('left')
 ax2.set_ylabel('Nombre observations')
 ax1.xaxis.grid(linestyle='--')
 plt.show()
