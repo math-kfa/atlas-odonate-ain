@@ -51,7 +51,7 @@ sp.plot( kind='hist',
 # axes' labels  
 plt.xlabel('Altitude')
 plt.ylabel('Nombre observations')
-#plt.savefig(outdir+'Orthetrum coerulescens'+'.png')
+plt.savefig(outdir+'Orthetrum coerulescens'+'.png')
 plt.show()
 
 
@@ -79,5 +79,5 @@ for specie in species:
     plt.ylabel('Nombre observations')
     # save
     title = (pd.unique(specie['nom_latin']))
-    #plt.savefig(outdir+str(title)+'.png')
+    plt.savefig(outdir+str(title)+'.png')
     plt.show()

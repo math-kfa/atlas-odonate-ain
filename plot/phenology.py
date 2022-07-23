@@ -96,7 +96,12 @@ print(sp.sort_values(['week'], ascending=False))
 minDate = sp['week'].min()
 maxDate = sp['week'].max()
 
-print(sp['week'].loc[lambda minDate: minDate==True].index)
+
+minDateIndex = df.index[sp['week'].min()]
+
+maxDateIndex = df.index[sp['week'].max()] #.tolist() # => .tolist seems not useful
+print("CORRESPONDING ROW ? :")
+#print(sp.loc["date_obs", minDateIndex])
 
 
 # plot
@@ -110,14 +115,20 @@ ax2.set_xlim(0, 52)
 ax1.set_xlim(0, 12)
 
 #############################################################################
-'''
-ax2.annotate('Test',
-             (sp["date_obs"][1]), sp["date_obs"][3]
-             xytext=(15, 15), 
+
+
+ax2.annotate(minDate,
+             xy = (2, 2),
+             xytext=(30, 30), 
+             textcoords='offset points',
+             arrowprops=dict(arrowstyle='<|-'))
+
+ax2.annotate(maxDate,
+             xy = (4, 4),
+             xytext=(30, 30), 
              textcoords='offset points',
              arrowprops=dict(arrowstyle='-|>'))
 
-'''
 
 
 ##############################################################################
