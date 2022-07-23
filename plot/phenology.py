@@ -47,10 +47,6 @@ filt = ((df['date_obs']>='1950-01-01') & (df['stade'] != 'larve') & (df['stade']
 #apply filters
 df = df.loc[filt]
 
-
-pd.set_option('display.max_rows', 500)
-print(df)
-
 # set index
 df.set_index('date_obs')
 #extract days
@@ -66,8 +62,9 @@ df['week'] = df['date_obs'].apply(lambda x:"%d" % (x.week))
 # convert to int
 df['week'] = df['week'].astype(int) 
 
-pd.set_option('display.max_rows', 500)
-print(df)
+# print df to verify 
+#pd.set_option('display.max_rows', 500)
+#print(df)
 
 
 
@@ -89,19 +86,26 @@ species = [val for val in species if not val.endswith(("sp.","ae","donata","pter
 sp = df.loc[df.nom_latin=='Somatochlora arctica']
 # print all rows
 pd.set_option('display.max_rows', sp.shape[0]+1)
-print(sp.sort_values(['week'], ascending=False))
+#print(sp.sort_values(['week'], ascending=False))
 
+#############################################################################
 
-#min and max value
-minDate = sp['week'].min()
-maxDate = sp['week'].max()
+#min and max week value
+minWeek = sp['week'].min()
+maxWeek = sp['week'].max()
 
 
 minDateIndex = df.index[sp['week'].min()]
-
 maxDateIndex = df.index[sp['week'].max()] #.tolist() # => .tolist seems not useful
+print("indexes", minDateIndex, maxDateIndex)
+
+print(sp.iloc[1,:])
+
 print("CORRESPONDING ROW ? :")
-#print(sp.loc["date_obs", minDateIndex])
+#print(sp.iloc["date_obs", minDateIndex])
+
+# minDate = 
+# maxDate = 
 
 
 # plot
@@ -114,17 +118,17 @@ sp['week'].plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orang
 ax2.set_xlim(0, 52)
 ax1.set_xlim(0, 12)
 
-#############################################################################
 
 
-ax2.annotate(minDate,
-             xy = (2, 2),
+
+ax2.annotate(minWeek,
+             xy = (sp['week'].min()-2, 2),
              xytext=(30, 30), 
              textcoords='offset points',
-             arrowprops=dict(arrowstyle='<|-'))
+             arrowprops=dict(arrowstyle='-|>'))
 
-ax2.annotate(maxDate,
-             xy = (4, 4),
+ax2.annotate(maxWeek,
+             xy = (sp['week'].max() +2, 2),
              xytext=(30, 30), 
              textcoords='offset points',
              arrowprops=dict(arrowstyle='-|>'))
