@@ -102,7 +102,7 @@ print(sp['week'].loc[lambda minDate: minDate==True].index)
 # plot
 fig , ax1 = plt.subplots(1, 1, figsize=(12, 6), dpi=100)
 ax2 = ax1.twiny()
-sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
+ax2 = sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
 sp['week'].plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
 
 #axes range
@@ -112,12 +112,13 @@ ax1.set_xlim(0, 12)
 #############################################################################
 '''
 ax2.annotate('Test',
-             (sp.index[1]),
+             (sp["date_obs"][1]), sp["date_obs"][3]
              xytext=(15, 15), 
              textcoords='offset points',
              arrowprops=dict(arrowstyle='-|>'))
 
 '''
+
 
 ##############################################################################
 

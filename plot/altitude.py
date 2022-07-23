@@ -7,25 +7,9 @@ Created on Mon Dec 27 14:43:48 2021
 
 
 
-import matplotlib
 import matplotlib.pyplot as plt
-
-from sklearn.neighbors import KernelDensity
-
-from shapely.geometry import Point
-import numpy as np
-
-import plotly.express as px
 import pandas as pd
-import geopandas as gpd
-import csv
-from shapely.geometry import MultiLineString
-from shapely.ops import polygonize
-from geopandas.tools import sjoin
-import seaborn as sns
-from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
-from matplotlib.ticker import FormatStrFormatter
 
 
 
@@ -43,10 +27,6 @@ df = pd.read_csv(odo_data_csv,
                  low_memory=False)
 
 
-
- 
-
-
 #----------------------------------------------------------------------------------------------------
 #  list of species
 #----------------------------------------------------------------------------------------------------
@@ -56,30 +36,23 @@ species = pd.unique(df['nom_latin']).tolist()
 species = [val for val in species if not val.endswith(("sp.","ae","donata","ptera"))]
 
 
-
-
-'''
 #----------------------------------------------------------------------------------------------------
 #  for 1 species
 #----------------------------------------------------------------------------------------------------
-# select the serie x=specie
-x = df.loc[df.nom_latin=='Orthetrum coerulescens', ['nom_latin','altitude']]
-# plot altitude
-plt.figure()
-x.plot.hist(
-                  grid=False,
-                  legend=False,
-                  bins=50,
-                  color='deeppink')
-
+# select a species
+sp = df.loc[df.nom_latin=='Orthetrum coerulescens', ['nom_latin','altitude']]
+# plot(800x600)
+plt.figure(figsize=(8, 6), dpi=100)
+sp.plot( kind='hist',
+        grid=False,
+        legend=False,
+        bins=50,
+        color='deeppink')
+# axes' labels  
 plt.xlabel('Altitude')
 plt.ylabel('Nombre observations')
-plt.savefig(outdir+'Orthetrum coerulescens'+'.png')
+#plt.savefig(outdir+'Orthetrum coerulescens'+'.png')
 plt.show()
-
-'''
-
-
 
 
 #----------------------------------------------------------------------------------------------------
@@ -96,19 +69,15 @@ for specie in species:
                   legend=False,
                   bins=50,
                   color='#7d0f51')
-    #set axes parameters
-    #plt.ylim(0.9)
-    #plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+    # axes' parameters for small df
+    if len(specie) < 2:
+        print("single value")
+        plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(1))
+        plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(1))
+    # axes' labels       
     plt.xlabel('Altitude')
     plt.ylabel('Nombre observations')
-    #save
+    # save
     title = (pd.unique(specie['nom_latin']))
     #plt.savefig(outdir+str(title)+'.png')
     plt.show()
-
-
-
-
-
-
-
