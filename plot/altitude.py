@@ -19,7 +19,6 @@ import matplotlib.ticker as ticker
 # import csv
 odo_data_csv = r'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/carto/grpls_01_2021_11_03_16_44_02_iso88591.csv'
 outdir = 'C:/Users/mathi/Documents/Biblio/Atlas_odonate_ain_2022/statistiques/out_vol/'
-
 # transform in dataframe
 df = pd.read_csv(odo_data_csv,  
                  encoding = "ISO-8859-1", 
