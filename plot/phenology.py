@@ -10,6 +10,7 @@ Created on Mon Dec 27 14:43:48 2021
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import matplotlib.ticker as ticker
 
 
 
@@ -62,7 +63,7 @@ species = [val for val in species if not val.endswith(("sp.","ae","donata","pter
 #  for 1 species
 #----------------------------------------------------------------------------------------------------
 # select the serie for a specie
-sp = df.loc[df.nom_latin=='Coenagrion puella']
+sp = df.loc[df.nom_latin=='Coenagrion ornatum']
 # min/max dates
 minWeekDates = sp[sp['week'] == sp['week'].min()]
 maxWeekDates = sp[sp['week'] == sp['week'].max()]
@@ -75,42 +76,41 @@ maxDate = maxDate.strftime('%d/%m/%Y')
 # plot
 fig , ax1 = plt.subplots(1, 1, figsize=(12, 6), dpi=100)
 ax2 = ax1.twiny()
-ax2 = sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
-sp['week'].plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
+# cases of single values dataframe
+if len(sp) > 1 :
+    ax2 = sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, bins=52, legend=False, color='#7d0f51')
+    sp['week'].plot(kind='kde', ax=ax2, secondary_y=True, legend=False, color='orange')
+elif len(sp) < 2 :
+    ax2 = sp['week'].plot(kind='hist', ax=ax2, secondary_y=False, legend=False, color='#7d0f51')
+    plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(1))
 # axes range
 ax2.set_xlim(0, 52)
 ax1.set_xlim(0, 12)
-
-################################################################################
-valueCount = sp['week'].value_counts(sort=False)
-#len(valueCount)
-#print(valueCount[0])
-
-sp['week'].value_counts().max()
-sp['week'].value_counts().max()
-
-################################################################################
-
+# count value/index of bins
+valueCount = sp['week'].value_counts().sort_index()
+maxValue = valueCount.max()
+firstBin = valueCount.iloc[0]
+lastBin = valueCount.iloc[len(valueCount)-1]
+# setting text y coordinate
+if (len(sp) > 10) : 
+    textYCoord = firstBin+(maxValue/10)
+elif (len(sp) < 11) and (len(df) > 1) : 
+    textYCoord = firstBin-(maxValue/10)
 # display min/max date
-
 ax2.annotate(minDate,
-             xy = (sp['week'].min()-1, 50),
+             xy = (sp['week'].min()-1, textYCoord),
              xytext=(-100, 10),
              textcoords='offset points',
              arrowprops=dict(arrowstyle="->",
                         connectionstyle="angle,angleA=0,angleB=-60",
                         ),)
-
 ax2.annotate(maxDate,
-             xy = (sp['week'].max() +1, sp['week'].value_counts().min()),
+             xy = (sp['week'].max() +1, textYCoord),
              xytext=(50, 10), 
              textcoords='offset points',
              arrowprops=dict(arrowstyle="->",
                         connectionstyle="angle,angleA=0,angleB=60",
                         ),)
-
-
-
 # axes' number of bins
 plt.locator_params(axis='x', nbins=30)
 ax1.set_xticks(np.arange(0, 12))
